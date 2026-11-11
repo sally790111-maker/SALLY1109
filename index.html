@@ -89,6 +89,13 @@
           <button id="refresh-button" class="text-button" type="button" aria-label="重新整理報修清單">重新整理</button>
         </div>
 
+        <div class="filter-bar" role="group" aria-label="依緊急程度篩選報修">
+          <button class="filter-button active" type="button" data-urgency="全部" aria-pressed="true">全部</button>
+          <button class="filter-button" type="button" data-urgency="高" aria-pressed="false">高</button>
+          <button class="filter-button" type="button" data-urgency="中" aria-pressed="false">中</button>
+          <button class="filter-button" type="button" data-urgency="低" aria-pressed="false">低</button>
+        </div>
+
         <div id="list-message" class="message" role="status" aria-live="polite" hidden></div>
         <div id="repair-list" class="repair-list" aria-busy="true">
           <div class="loading-card">正在載入報修清單…</div>

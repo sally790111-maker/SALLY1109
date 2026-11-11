@@ -9,6 +9,9 @@
   const formMessage = document.querySelector("#form-message");
   const listMessage = document.querySelector("#list-message");
   const repairList = document.querySelector("#repair-list");
+  const filterButtons = [...document.querySelectorAll(".filter-button")];
+  let loadedRepairs = [];
+  let activeUrgency = "全部";
 
   const config = window.APP_CONFIG;
   const supabaseLibrary = window.supabase;
@@ -20,6 +23,9 @@
     repairList.setAttribute("aria-busy", "false");
     submitButton.disabled = true;
     refreshButton.disabled = true;
+    filterButtons.forEach((button) => {
+      button.disabled = true;
+    });
     return;
   }
 
@@ -30,6 +36,7 @@
 
   form.addEventListener("submit", handleSubmit);
   refreshButton.addEventListener("click", loadRepairs);
+  filterButtons.forEach((button) => button.addEventListener("click", handleFilter));
   loadRepairs();
 
   async function handleSubmit(event) {
@@ -87,9 +94,11 @@
         .limit(LIST_LIMIT);
 
       if (error) throw error;
-      renderRepairs(data ?? []);
+      loadedRepairs = data ?? [];
+      renderFilteredRepairs();
     } catch (error) {
       console.error("載入報修清單失敗", error);
+      loadedRepairs = [];
       repairList.replaceChildren();
       showMessage(listMessage, "error", formatError(error, "清單載入失敗，請稍後再試。"));
     } finally {
@@ -98,13 +107,32 @@
     }
   }
 
+  function handleFilter(event) {
+    activeUrgency = event.currentTarget.dataset.urgency;
+    filterButtons.forEach((button) => {
+      const isActive = button.dataset.urgency === activeUrgency;
+      button.classList.toggle("active", isActive);
+      button.setAttribute("aria-pressed", String(isActive));
+    });
+    renderFilteredRepairs();
+  }
+
+  function renderFilteredRepairs() {
+    const visibleRepairs = activeUrgency === "全部"
+      ? loadedRepairs
+      : loadedRepairs.filter((repair) => repair.urgency === activeUrgency);
+    renderRepairs(visibleRepairs);
+  }
+
   function renderRepairs(repairs) {
     repairList.replaceChildren();
 
     if (repairs.length === 0) {
       const empty = document.createElement("div");
       empty.className = "empty-card";
-      empty.textContent = "目前還沒有報修紀錄。";
+      empty.textContent = activeUrgency === "全部"
+        ? "目前還沒有報修紀錄。"
+        : `目前沒有緊急程度為「${activeUrgency}」的報修。`;
       repairList.append(empty);
       return;
     }
