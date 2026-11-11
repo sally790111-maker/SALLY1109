@@ -258,6 +258,44 @@ textarea:focus {
   opacity: 0.55;
 }
 
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  margin: -8px 0 20px;
+  padding: 4px;
+  border-radius: 12px;
+  background: #edf1ed;
+}
+
+.filter-button {
+  min-width: 52px;
+  min-height: 40px;
+  flex: 1;
+  padding: 7px 12px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  color: var(--muted);
+  background: transparent;
+  font-weight: 800;
+  transition: color 150ms ease, background 150ms ease, box-shadow 150ms ease;
+}
+
+.filter-button:hover:not(.active) {
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.65);
+}
+
+.filter-button.active {
+  color: #fff;
+  background: var(--accent);
+  box-shadow: 0 4px 12px rgba(8, 127, 91, 0.2);
+}
+
+.filter-button:focus-visible {
+  outline: 3px solid rgba(8, 127, 91, 0.25);
+  outline-offset: 2px;
+}
+
 .message {
   margin-top: 18px;
   padding: 11px 13px;
@@ -337,6 +375,7 @@ textarea:focus {
 .badge.high {
   color: #8a2b25;
   background: #ffe3df;
+  box-shadow: inset 0 0 0 1px #efb4ad;
 }
 
 .badge.low {
