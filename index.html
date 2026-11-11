@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="簡單、安全且適合手機使用的報修登記系統。">
+    <title>報修登記系統</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script defer src="config.js"></script>
+    <script defer src="app.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="shell header-inner">
+        <div>
+          <p class="eyebrow">REPAIR REQUEST</p>
+          <h1>報修登記</h1>
+          <p class="header-copy">填寫問題資訊，我們會將需求加入待處理清單。</p>
+        </div>
+        <div class="header-mark" aria-hidden="true">修</div>
+      </div>
+    </header>
+
+    <main class="shell page-grid">
+      <section class="panel form-panel" aria-labelledby="form-title">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">新增需求</p>
+            <h2 id="form-title">填寫報修資料</h2>
+          </div>
+          <span class="required-note"><span aria-hidden="true">＊</span> 必填欄位</span>
+        </div>
+
+        <form id="repair-form" novalidate>
+          <div class="field-grid">
+            <div class="field">
+              <label for="reporter-name">報修人 <span aria-hidden="true">＊</span></label>
+              <input id="reporter-name" name="reporter_name" type="text" maxlength="100" autocomplete="name" required>
+            </div>
+
+            <div class="field">
+              <label for="location">地點或部門 <span aria-hidden="true">＊</span></label>
+              <input id="location" name="location" type="text" maxlength="200" autocomplete="organization" required>
+            </div>
+
+            <div class="field">
+              <label for="category">類別 <span aria-hidden="true">＊</span></label>
+              <select id="category" name="category" required>
+                <option value="">請選擇</option>
+                <option value="設備">設備</option>
+                <option value="網路">網路</option>
+                <option value="環境">環境</option>
+                <option value="其他">其他</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="urgency">緊急程度 <span aria-hidden="true">＊</span></label>
+              <select id="urgency" name="urgency" required>
+                <option value="低">低</option>
+                <option value="中" selected>中</option>
+                <option value="高">高</option>
+              </select>
+            </div>
+
+            <div class="field field-full">
+              <label for="description">問題說明 <span aria-hidden="true">＊</span></label>
+              <textarea id="description" name="description" rows="5" maxlength="2000" placeholder="請描述發生的狀況、設備與可協助判斷的資訊" required></textarea>
+              <p class="field-hint">最多 2,000 字</p>
+            </div>
+          </div>
+
+          <div id="form-message" class="message" role="status" aria-live="polite" hidden></div>
+
+          <button id="submit-button" class="primary-button" type="submit">
+            <span class="button-label">送出報修</span>
+            <span class="button-arrow" aria-hidden="true">→</span>
+          </button>
+        </form>
+      </section>
+
+      <section class="panel list-panel" aria-labelledby="list-title">
+        <div class="section-heading list-heading">
+          <div>
+            <p class="section-kicker">最新紀錄</p>
+            <h2 id="list-title">最近 20 筆報修</h2>
+          </div>
+          <button id="refresh-button" class="text-button" type="button" aria-label="重新整理報修清單">重新整理</button>
+        </div>
+
+        <div id="list-message" class="message" role="status" aria-live="polite" hidden></div>
+        <div id="repair-list" class="repair-list" aria-busy="true">
+          <div class="loading-card">正在載入報修清單…</div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="shell">報修資料會顯示於公開清單，請勿填寫敏感個資。</div>
+    </footer>
+  </body>
+</html>
