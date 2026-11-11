@@ -58,7 +58,7 @@
     setSubmitting(true);
 
     try {
-      const { error } = await client.from(TABLE_NAME).insert(payload);
+      const { error } = await client.from("repair_request").insert(payload);
       if (error) throw error;
 
       form.reset();
